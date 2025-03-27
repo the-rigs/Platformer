@@ -7,12 +7,14 @@ class Player(pg.sprite.Sprite):
     def __init__(self, game):
         pg.sprite.Sprite.__init__(self)
         self.game = game
-
+        self.width = 0
+        self.height = 0
         self.idle_img= []
         self.run_img_r = []
         self.run_img_l = []
         self.running = False
         self.jumping = False
+        self.scale = .8
         self.load_images()
         self.image = self.idle_img[0]
         # self.image = pg.Surface((30, 40))
@@ -24,9 +26,10 @@ class Player(pg.sprite.Sprite):
         self.acc = vec(0, 0)
         self.last_update = 0
         self.current_frame = 0
+
     def animate(self):
         now = pg.time.get_ticks()
-        if int(self.vel.x) != 0 :
+        if int(self.vel.x) != 0 and not self.jumping :
             self.running = True
         else:
             self.running = False
@@ -38,6 +41,9 @@ class Player(pg.sprite.Sprite):
                 self.rect= self.image.get_rect()
         if self.jumping:
             self.image = pg.image.load('idle3.png')
+            self.width = self.image.get_width()
+            self.height = self.image.get_height()
+            self.image = pg.transform.scale(self.image, (self.width * self.scale, self.height * self.scale))
             self.rect = self.image.get_rect()
         if self.running:
             if now - self.last_update > 100:
@@ -56,7 +62,7 @@ class Player(pg.sprite.Sprite):
             img = pg.image.load(filename)
             self.width = img.get_width()
             self.height = img.get_height()
-            img =pg.transform.scale(img,(self.width*SCALE,self.height*SCALE))
+            img =pg.transform.scale(img,(self.width*self.scale,self.height*self.scale))
             self.idle_img.append(img)
 
         for i in range(1,7):
@@ -64,19 +70,16 @@ class Player(pg.sprite.Sprite):
             img = pg.image.load(filename)
             self.width = img.get_width()
             self.height = img.get_height()
-            img =pg.transform.scale(img,(self.width*SCALE,self.height*SCALE))
+            img =pg.transform.scale(img,(self.width*self.scale,self.height*self.scale))
             self.run_img_r.append(img)
 
         for frame in self.run_img_r:
             self.run_img_l.append(pg.transform.flip(frame,True,False))
-
     def jump(self):
         # jump only if standing on a platform
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self , self.game.platforms, False)
         self.rect.x -= 1
-        self.jumping = True
-        self.jumping = True
         if hits:
             self.jumping = True
             self.vel.y = -20
