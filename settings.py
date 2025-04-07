@@ -1,85 +1,9 @@
-# # game options/settings
-# from pickle import REDUCE
-#
-# TITLE = "Jumpy!"
-# WIDTH = 560
-# HEIGHT = 525
-# FPS = 60
-#
-#
-# # define colors
-# WHITE = (255, 255, 255)
-# BLACK = (0, 0, 0)
-# RED = (255, 0, 0)
-# GREEN = (0, 255, 0)
-# BLUE = (0, 0, 255)
-# YELLOW = (255, 255, 0)
-# LIGHTBLUE = (0, 155, 155)
-# COLOR1 = RED
-# COLOR2 = BLUE
-# COLOR3 = GREEN
-#
-# # Player properties
-# PLAYER_ACC = 0.5
-# PLAYER_FRICTION = -0.12
-# PLAYER_GRAV = .9
-# SCALE = .05
-# BLOCK_SIZE = 36*SCALE
-# FLOOR = (HEIGHT-(BLOCK_SIZE*2))
-# SCREEN_1 = 16*BLOCK_SIZE
-# SCREEN_2=SCREEN_1*2
-# SCREEN_3=SCREEN_1*3
-# SCREEN_4=SCREEN_1*4
-# SCREEN_5=SCREEN_1*5
-# SCREEN_6=SCREEN_1*6
-# SCREEN_7=SCREEN_1*7
-# SCREEN_8=SCREEN_1*8
-# SCREEN_9=SCREEN_1*9
-# SCREEN_10=SCREEN_1*10
-# SCREEN_11=SCREEN_1*11
-# SCREEN_12=SCREEN_1*12
-#
-# RECTANGLE_SIZE_X = (BLOCK_SIZE*2)
-# RECTANGLE_SIZE_Y1 = (BLOCK_SIZE*2)
-# RECTANGLE_SIZE_Y2 = (BLOCK_SIZE*3)
-# RECTANGLE_SIZE_Y3 = (BLOCK_SIZE*4)
-#
-# # Starting platforms
-# PLATFORM_LIST = [#screen zero
-#                 (0, FLOOR, SCREEN_4+(BLOCK_SIZE*5), FLOOR, COLOR1),
-#                 (SCREEN_4+(BLOCK_SIZE*7), FLOOR, ((SCREEN_5+(BLOCK_SIZE*7))-(SCREEN_4+(BLOCK_SIZE*7))), FLOOR, COLOR1),
-#                 (SCREEN_5+(BLOCK_SIZE*9), FLOOR, SCREEN_12, FLOOR, COLOR1),
-#                  #screen one
-#                 (SCREEN_1, FLOOR-BLOCK_SIZE*4, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_1+(BLOCK_SIZE*4), FLOOR-BLOCK_SIZE*4, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_1+(BLOCK_SIZE*5), FLOOR-BLOCK_SIZE*4, BLOCK_SIZE, BLOCK_SIZE, COLOR2),
-#                 (SCREEN_1+(BLOCK_SIZE*6), FLOOR-BLOCK_SIZE*4, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_1+(BLOCK_SIZE*6), FLOOR-BLOCK_SIZE*8, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_1+(BLOCK_SIZE*7), FLOOR-BLOCK_SIZE*4, BLOCK_SIZE, BLOCK_SIZE, COLOR2),
-#                 (SCREEN_1+(BLOCK_SIZE*8), FLOOR-BLOCK_SIZE*4, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_1+(BLOCK_SIZE*12), FLOOR-BLOCK_SIZE*2, RECTANGLE_SIZE_X, RECTANGLE_SIZE_Y1, COLOR3),
-#                 #screen two
-#                 (SCREEN_2+(BLOCK_SIZE*7), FLOOR-RECTANGLE_SIZE_Y2, RECTANGLE_SIZE_X, RECTANGLE_SIZE_Y2, COLOR3),
-#                 (SCREEN_2+(BLOCK_SIZE*15), FLOOR-RECTANGLE_SIZE_Y3, RECTANGLE_SIZE_X, RECTANGLE_SIZE_Y3, COLOR3),
-#                 #screen three
-#                 (SCREEN_3+(BLOCK_SIZE*10), FLOOR-RECTANGLE_SIZE_Y3, RECTANGLE_SIZE_X, RECTANGLE_SIZE_Y3, COLOR3),
-#                 #screen four
-#                 (SCREEN_4+(BLOCK_SIZE*14), FLOOR-BLOCK_SIZE*4, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_4+(BLOCK_SIZE*15), FLOOR-BLOCK_SIZE*4, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_4+(BLOCK_SIZE*16), FLOOR-BLOCK_SIZE*4, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_4+(BLOCK_SIZE*17), FLOOR-BLOCK_SIZE*8, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_4+(BLOCK_SIZE*18), FLOOR-BLOCK_SIZE*8, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_4+(BLOCK_SIZE*19), FLOOR-BLOCK_SIZE*8, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_4+(BLOCK_SIZE*20), FLOOR-BLOCK_SIZE*8, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_4+(BLOCK_SIZE*21), FLOOR-BLOCK_SIZE*8, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_4+(BLOCK_SIZE*22), FLOOR-BLOCK_SIZE*8, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_4+(BLOCK_SIZE*23), FLOOR-BLOCK_SIZE*8, BLOCK_SIZE, BLOCK_SIZE, COLOR1),
-#                 (SCREEN_4+(BLOCK_SIZE*24), FLOOR-BLOCK_SIZE*8, BLOCK_SIZE, BLOCK_SIZE, COLOR1),]
-#
-TITLE = "Super Mario Brothers!"
-WIDTH = 560
-HEIGHT = 525
+TITLE = "Jumpy!"
+SCALE = (1)
+WIDTH = 576
+HEIGHT = 540
 FPS = 60
+FONT_NAME = 'arial'
 
 
 # define colors
@@ -92,38 +16,68 @@ YELLOW = (255, 255, 0)
 LIGHTBLUE = (0, 155, 155)
 COLOR1 = RED
 COLOR2 = BLUE
-COLOR3 = GREEN
 
 # Player properties
-PLAYER_ACC = 0.5
+PLAYER_ACC = 0.8
 PLAYER_FRICTION = -0.12
 PLAYER_GRAV = .3
-SCALE = 1
+
+
 BLOCK_SIZE = 36*SCALE
-FLOOR = (HEIGHT-BLOCK_SIZE*2)
-SCREEN_1 = 16*BLOCK_SIZE
-RECTANGLE_SIZE_X = (BLOCK_SIZE*2)
-RECTANGLE_SIZE_Y1 = (BLOCK_SIZE*2)
-RECTANGLE_SIZE_Y2 = (BLOCK_SIZE*3)
-RECTANGLE_SIZE_Y3 = (BLOCK_SIZE*4)
-SCREEN_12=SCREEN_1*12
 
-
-
-PLATFORM_LIST = [(17,6,2),
-                 (21,6,1),
-                 (22,6,2),
-                 (23,6,1),
-                 (23,10,2),
-                 (24,6,2),
-                 (25,6,1),
-                 (29,4,2),
-                 (30,4,2),
-                 (29,3,2),
-(30,3,2)]
-
-for i in range(0,int(SCREEN_12)):
-    var = (i,1,0)
-    var2 = (i,2,0)
+SCREEN_1 = 16
+WALL_LIST=[(-14,4,99)]
+PLATFORM_LIST = [(17,5,2),
+                 (21,5,1),
+                 (22,5,2),
+                 (23,5,1),
+                 (23,9,1),
+                 (24,5,2),
+                 (25,5,1),
+                 (78,5,1),
+                 (79,5,1),
+                 (80,5,1),
+                 (81,10,1),(82,10,1),(83,10,1),(84,10,1),(85,10,1),(86,10,1),(87,10,1),(88,10,1),
+                 (91,10,1),(92,10,1),(93,10,1),(94,10,2),(94,5,1),
+                 (100,5,1),(101,5,1),
+                 (106,5,2),(109,5,2),(109,10,2),(112,5,2),
+                 (118,5,1),
+                 (121,10,1),(122,10,1),(123,10,1),
+                 (128,10,1),(129,10,2),(129,5,1),(130,10,2),(130,5,1),(131,10,1),
+                 (134,2,1),(135,2,1),(135,3,1),(136,2,1),(136,3,1),(136,4,1),(137,2,1),(137,3,1),(137,4,1),(137,5,1),
+                 (140,2,1),(140,3,1),(140,4,1),(140,5,1),(141,2,1),(141,3,1),(141,4,1),(142,2,1),(142,3,1),(143,2,1),
+                 ]
+for i in range(-20,192):
+    var = (i,0,0)
+    var2 = (i,1,0)
     PLATFORM_LIST.append(var)
     PLATFORM_LIST.append(var2)
+    #tube loop
+    start = 29
+    tube_h = 2
+    for i in range(1, tube_h+1):
+        var = (start, i + 1, 0)
+        var2 = (start + 1, i + 1, 0)
+        PLATFORM_LIST.append(var)
+        PLATFORM_LIST.append(var2)
+    start = 39
+    tube_h = 3
+    for i in range(1,tube_h+1):
+        var = (start,i+1,0)
+        var2 = (start+1,i+1,0)
+        PLATFORM_LIST.append(var)
+        PLATFORM_LIST.append(var2)
+    start = 47
+    tube_h = 4
+    for i in range(1, tube_h+1):
+        var = (start, i + 1, 0)
+        var2 = (start + 1, i + 1, 0)
+        PLATFORM_LIST.append(var)
+        PLATFORM_LIST.append(var2)
+    start = 58
+    tube_h = 4
+    for i in range(1, tube_h+1):
+        var = (start, i + 1, 0)
+        var2 = (start + 1, i + 1, 0)
+        PLATFORM_LIST.append(var)
+        PLATFORM_LIST.append(var2)
