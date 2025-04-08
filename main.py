@@ -44,9 +44,6 @@ class Game:
     def update(self):
         # Game Loop - Update
         self.all_sprites.update()
-        # print("track",self.player.track)
-        #print("far",self.player.far)
-        # check if player hits a platform - only if falling
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
@@ -61,7 +58,7 @@ class Game:
                 #if self.player.rect.left <= hit_plat_L[0].rect.left:
                 self.player.stop=True
                 self.player.pos.x += 6
-                print(self.player.pos.x)
+                # print(self.player.pos.x)
         if self.player.stop:
             self.player.acc = 0
         if self.player.rect.right>= 3*WIDTH/4:
