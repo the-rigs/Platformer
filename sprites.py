@@ -134,7 +134,7 @@ class Platform(pg.sprite.Sprite):
         elif self.type == 7:
             self.image = plats[46]
         elif self.type == 8:
-            self.image = plats[136]
+            self.image = plats[135]
 
         self.rect = self.image.get_rect()
         self.rect.x = BLOCK_SIZE*x
