@@ -61,7 +61,7 @@ class Game:
                 # print(self.player.pos.x)
         if self.player.stop:
             self.player.acc = 0
-        if self.player.rect.right>= 3*WIDTH/4:
+        if self.player.rect.right>= WIDTH/2:
             if self.player.vel.x>.05:
                 self.player.count +=1
 
@@ -74,7 +74,7 @@ class Game:
             self.player.count -=1
             if self.player.count <0:
                 self.player.count=0
-        if self.player.rect.left <= WIDTH/4:
+        if self.player.rect.left <= WIDTH/8:
             self.player.pos.x += abs(self.player.vel.x)
             for plat in self.platforms:
                 plat.rect.x += abs(self.player.vel.x)
