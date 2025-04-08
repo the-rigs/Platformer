@@ -48,36 +48,48 @@ PLATFORM_LIST = [(17,5,2),
                  (140,2,1),(140,3,1),(140,4,1),(140,5,1),(141,2,1),(141,3,1),(141,4,1),(142,2,1),(142,3,1),(143,2,1),
                  ]
 for i in range(-20,192):
-    var = (i,0,0)
+    var = (i,0,1)
     var2 = (i,1,0)
     PLATFORM_LIST.append(var)
     PLATFORM_LIST.append(var2)
     #tube loop
     start = 29
     tube_h = 2
+    typeT = 5
     for i in range(1, tube_h+1):
-        var = (start, i + 1, 0)
-        var2 = (start + 1, i + 1, 0)
+        var = (start, i + 1, typeT )
+        var2 = (start + 1, i + 1, typeT+2)
+        typeT = typeT - 1
+
         PLATFORM_LIST.append(var)
         PLATFORM_LIST.append(var2)
     start = 39
     tube_h = 3
+    typeT = 5
     for i in range(1,tube_h+1):
-        var = (start,i+1,0)
-        var2 = (start+1,i+1,0)
+        var = (start, i + 1, typeT)
+        var2 = (start + 1, i + 1, typeT + 2)
+        if i >= tube_h:
+            typeT = typeT - 1
         PLATFORM_LIST.append(var)
         PLATFORM_LIST.append(var2)
     start = 47
     tube_h = 4
+    typeT = 5
     for i in range(1, tube_h+1):
-        var = (start, i + 1, 0)
-        var2 = (start + 1, i + 1, 0)
+        var = (start, i + 1, typeT)
+        var2 = (start + 1, i + 1, typeT + 2)
+        if i >= tube_h:
+            typeT = typeT - 1
         PLATFORM_LIST.append(var)
         PLATFORM_LIST.append(var2)
     start = 58
     tube_h = 4
-    for i in range(1, tube_h+1):
-        var = (start, i + 1, 0)
-        var2 = (start + 1, i + 1, 0)
+    typeT = 5
+    for i in range(1, tube_h+        1):
+        var = (start, i + 1, typeT)
+        var2 = (start + 1, i + 1, typeT + 2)
+        if i >= tube_h:
+            typeT = typeT - 1
         PLATFORM_LIST.append(var)
         PLATFORM_LIST.append(var2)

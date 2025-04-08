@@ -9,7 +9,7 @@ sprite_sheet_image = pg.image.load('spritesheet.png')
 sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_image)
 # size = 1
 for x in range(25):
-    for y in range(36):
+    for y in range(32):
         #426X629
         # if x == 6 and y==0:
         plats.append(sprite_sheet.get_image(x, y, 17.04, 17.03,SCALE, BLACK))
@@ -103,10 +103,8 @@ class Player(pg.sprite.Sprite):
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT] :
             self.acc.x = -PLAYER_ACC
-            print(self.vel.x, self.acc)
         if keys[pg.K_RIGHT] :
             self.acc.x = PLAYER_ACC
-            print(self.vel.x, self.acc)
 
         # apply friction
         self.acc.x += self.vel.x * PLAYER_FRICTION
@@ -119,12 +117,25 @@ class Platform(pg.sprite.Sprite):
     def __init__(self, x, y, type):
         pg.sprite.Sprite.__init__(self)
         self.type = type
-        if self.type == 1:
+        if self.type == 0:
+            self.image = plats[49]
+        elif self.type == 1:
+            self.image = plats[50]
+        elif self.type ==2:
+            self.image = plats[160]
+        elif self.type ==3:
             self.image = plats[0]
-        elif self.type == 2:
-            self.image = plats[2]
-        elif self.type ==0:
-            self.image = plats[53]
+        elif self.type == 4:
+            self.image = plats[13]
+        elif self.type == 5:
+            self.image = plats[14]
+        elif self.type == 6:
+            self.image = plats[45]
+        elif self.type == 7:
+            self.image = plats[46]
+        elif self.type == 8:
+            self.image = plats[136]
+
         self.rect = self.image.get_rect()
         self.rect.x = BLOCK_SIZE*x
         self.rect.y = HEIGHT-(36*(y+1))*SCALE
