@@ -217,15 +217,11 @@ class Player(pg.sprite.Sprite):
     def update(self):
         self.animate()
         self.acc = vec(0, PLAYER_GRAV)
-
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
             self.acc.x = -PLAYER_ACC
-            self.walking= True
         if keys[pg.K_RIGHT]:
             self.acc.x = PLAYER_ACC
-            self.walking= True
-
         if keys[pg.K_SPACE]:
             # print('jump')
             self.jump()
@@ -251,15 +247,14 @@ class Platform(pg.sprite.Sprite):
         #floor
         if self.type == 0:
             self.image = plats[0]
-                    #brick
+        #brick
         elif self.type ==2:
             self.image = plats[25]
         #question mark
         elif self.type ==3:
             # Pow(x,y)
-
+            self.quest = True
             self.image = pow_block[0]
-            # self.image = plats[375]
         #tube
         elif self.type == 4:
             self.image = plats[10]
@@ -274,17 +269,17 @@ class Platform(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = BLOCK_SIZE*x
         self.rect.y = HEIGHT-(36*(y+1))*SCALE
+        self.quest = True
 
     def animate(self):
-        now = pg.time.get_ticks()
-        if now - self.last_update > 275:
-            self.last_update = now
-            self.current_frame = (self.current_frame + 1) % len(pow_block)
-            self.image = pow_block[self.current_frame]
-            # self.image = pg.transform.scale(self.image, (20, 20))
-            # bottom = self.rect.bottom+2
-            # self.rect = self.image.get_rect()
-            # self.rect.bottom = bottom
+        if self.quest == True:
+            now = pg.time.get_ticks()
+            if now - self.last_update > 275:
+                self.last_update = now
+                self.current_frame = (self.current_frame + 1) % len(pow_block)
+                self.image = pow_block[self.current_frame]
+        else:
+            self.image = plats[450]
 
     def update(self):
         if self.type == 3:
