@@ -4,6 +4,8 @@ import pygame as pg
 from settings import *
 vec = pg.math.Vector2
 plats = []
+pow_block = []
+
 import spritesheet
 import random
 sprite_sheet_image = pg.image.load('spritesheet2.png')
@@ -16,106 +18,13 @@ for x in range(21):
         color_key  = WHITE
         if (x == 0 or x == 1) and (y ==9 or y ==10):
             color_key = BLACK
-
+        if y == 0 and (x>14 and x < 18):
+            # color_key = BLACK
+            pow_block.append(sprite_sheet.get_image(x, y, 16, 16, SCALE, color_key))
         plats.append(sprite_sheet.get_image(x, y, 16, 16,SCALE, color_key))
         image = sprite_sheet.get_image(x, y, 16, 16,SCALE, color_key)
-        # image.set_colorkey(WHITE)
 
-# class Player(pg.sprite.Sprite):
-#     def __init__(self, game):
-#         pg.sprite.Sprite.__init__(self)
-#         self.game = game
-#         self.width = 0
-#         self.height = 0
-#         self.idle_img = []
-#         self.run_img_r = []
-#         self.run_img_l = []
-#         self.running = False
-#         self.jumping = False
-#         self.current_frame=0
-#         self.load_images()
-#         self.image = self.idle_img[0]
-#         # self.image = pg.Surface((30, 40))
-#         # self.image.fill(YELLOW)
-#         self.rect = self.image.get_rect()
-#         self.rect.center = (WIDTH / 2, HEIGHT / 2)
-#         self.pos = vec(WIDTH / 2, HEIGHT / 2)
-#         self.vel = vec(0, 0)
-#         self.acc = vec(0, 0)
-#         self.count = 0
-#         self.track = 0
-#         self.far = 0
-#         self.stop = False
-#         self.last_update = pg.time.get_ticks()
-#     def animate(self):
-#         now =pg.time.get_ticks()
-#         if int(self.vel.x) != 0:
-#             self.running = True
-#             self.jumping  =False
-#         else:
-#             self.running = False
-#         if not self.running and not self.jumping:
-#             if now - self.last_update>125:
-#                 self.last_update=now
-#                 self.current_frame = (self.current_frame+1)%len(self.idle_img)
-#                 self.image = self.idle_img[self.current_frame]
-#                 self.rect = self.image.get_rect()
-#         if self.jumping:
-#             self.image = pg.image.load("idle3.png")
-#             self.rect = self.image.get_rect()
-#         if self.running:
-#             if now - self.last_update>100:
-#                 self.last_update=now
-#                 self.current_frame = (self.current_frame+1)%len(self.run_img_r)
-#                 if self.vel.x >0:
-#                     self.image = self.run_img_r[self.current_frame]
-#                 else:
-#                     self.image = self.run_img_l[self.current_frame]
-#                 self.rect = self.image.get_rect()
-#     def load_images(self):
-#         for i in range(1, 4):
-#             filename = "idle{}.png".format(i)
-#             img = pg.image.load(filename)
-#             self.width = img.get_width()* SCALE
-#             self.height = img.get_height()* SCALE
-#             # img = pg.image.load(filename)
-#
-#             img = pg.transform.scale(img,(self.width,self.height))
-#             self.idle_img.append(img)
-#         for i in range(1, 7):
-#             filename = "run{}.png".format(i)
-#             img = pg.image.load(filename)
-#             self.width = img.get_width() * SCALE
-#             self.height = img.get_height() * SCALE
-#             img = pg.transform.scale(img,(self.width,self.height))
-#             self.run_img_r.append(img)
-#         for frame in self.run_img_r:
-#             self.run_img_l.append(pg.transform.flip(frame, True, False))
-#
-#     def jump(self):
-#         # jump only if standing on a platform
-#         self.rect.x += 1
-#         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
-#         self.rect.x -= 1
-#         if hits:
-#             self.jumping = True
-#             self.vel.y = -20
-#
-#     def update(self):
-#         self.animate()
-#         self.acc = vec(0, PLAYER_GRAV)
-#         keys = pg.key.get_pressed()
-#         if keys[pg.K_LEFT] :
-#             self.acc.x = -PLAYER_ACC
-#         if keys[pg.K_RIGHT] :
-#             self.acc.x = PLAYER_ACC
-#
-#         # apply friction
-#         self.acc.x += self.vel.x * PLAYER_FRICTION
-#         # equations of motion
-#         self.vel += self.acc
-#         self.pos += self.vel + 0.5 * self.acc
-#         self.rect.midbottom = self.pos
+
 class Player(pg.sprite.Sprite):
     def __init__(self, game):
         # self._layer = PLAYER_LAYER
@@ -258,28 +167,24 @@ class Player(pg.sprite.Sprite):
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
         self.rect.x -= 1
         if hits:
-            self.jumping = True
-            self.vel.y = -20
+            self.jumping = False
+            self.vel.y = -PLAYER_JUMP
 
     def load_images(self):
-        size_ran = random.randrange(2, 8)
-        divide = random.randrange(4, 8)
-        size = size_ran / divide
         sprite_sheet_image = pg.image.load('mario.png').convert_alpha()
         self.sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_image)
         size = 1
         for x in range(8):
             for y in range(8):
                 if x == 0 and y < 3:
-                    self.grab_list.append(self.sprite_sheet.get_image(x, y, 32, 40, size, BLACK))
+                    self.grab_list.append(self.sprite_sheet.get_image(y, x, 32, 40, size, BLACK))
                 #   print(self.grab_list)
-                elif x == 0 and y < 6 and y > 3:
+                elif x == 0 and y < 6 and y > 2:
                     img = self.sprite_sheet.get_image(y, x, 32, 40, size, BLACK)
                     self.blink_list_r.append(img)
                     img = pg.transform.flip(img, True, False)
                     img.set_colorkey(BLACK)
                     self.blink_list_l.append(img)
-                #   print(self.blink_list)
                 elif x == 2 and y < 2:
                     img = self.sprite_sheet.get_image(y, x, 32, 40, size, BLACK)
                     self.jump_list_r.append(img)
@@ -312,15 +217,19 @@ class Player(pg.sprite.Sprite):
     def update(self):
         self.animate()
         self.acc = vec(0, PLAYER_GRAV)
+
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
             self.acc.x = -PLAYER_ACC
+            self.walking= True
         if keys[pg.K_RIGHT]:
             self.acc.x = PLAYER_ACC
+            self.walking= True
+
         if keys[pg.K_SPACE]:
             # print('jump')
             self.jump()
-            # self.jumping = True
+            self.jumping = True
         # apply friction
         self.acc.x += self.vel.x * PLAYER_FRICTION
         # equations of motion
@@ -337,17 +246,20 @@ class Platform(pg.sprite.Sprite):
     def __init__(self, x, y, type):
         pg.sprite.Sprite.__init__(self)
         self.type = type
+        self.current_frame = 0
+        self.last_update = 0
         #floor
         if self.type == 0:
             self.image = plats[0]
-        # elif self.type == 1:
-        #     self.image = plats[28]
-        #brick
+                    #brick
         elif self.type ==2:
             self.image = plats[25]
         #question mark
         elif self.type ==3:
-            self.image = plats[375]
+            # Pow(x,y)
+
+            self.image = pow_block[0]
+            # self.image = plats[375]
         #tube
         elif self.type == 4:
             self.image = plats[10]
@@ -357,14 +269,52 @@ class Platform(pg.sprite.Sprite):
             self.image = plats[35]
         elif self.type == 7:
             self.image = plats[34]
-
-
         elif self.type == 8:
             self.image = plats[1]
-
         self.rect = self.image.get_rect()
         self.rect.x = BLOCK_SIZE*x
         self.rect.y = HEIGHT-(36*(y+1))*SCALE
+
+    def animate(self):
+        now = pg.time.get_ticks()
+        if now - self.last_update > 275:
+            self.last_update = now
+            self.current_frame = (self.current_frame + 1) % len(pow_block)
+            self.image = pow_block[self.current_frame]
+            # self.image = pg.transform.scale(self.image, (20, 20))
+            # bottom = self.rect.bottom+2
+            # self.rect = self.image.get_rect()
+            # self.rect.bottom = bottom
+
+    def update(self):
+        if self.type == 3:
+            self.animate()
+
+class Pow(pg.sprite.Sprite):
+  def __init__(self, x,y):
+    # self.groups = game.all_sprites, game.powerups
+    pg.sprite.Sprite.__init__(self,)
+    # self.game = game
+    self.current_frame = 0
+    self.last_update = 0
+    self.image = pg.Surface((20, 20))
+    self.image = pow_block[0]
+    self.image = pg.transform.scale(self.image,(20,20))
+    self.rect = self.image.get_rect()
+    self.rect.x = BLOCK_SIZE * x
+    self.rect.y = HEIGHT - (36 * (y + 1)) * SCALE
+  def animate(self):
+      now = pg.time.get_ticks()
+      if now - self.last_update > 135:
+        self.last_update = now
+        self.current_frame = (self.current_frame+1)%len(pow_block)
+        self.image = pow_block[self.current_frame]
+        self.image = pg.transform.scale(self.image,(20,20))
+        # bottom = self.rect.bottom+2
+        # self.rect = self.image.get_rect()
+        # self.rect.bottom = bottom
+  def update(self):
+    self.animate()
 
 class Wall(pg.sprite.Sprite):
     def __init__(self, x, y, type):

@@ -44,13 +44,25 @@ class Game:
     def update(self):
         # Game Loop - Update
         self.all_sprites.update()
+        if self.player.vel.y < 0:
+            for p in :
+                if p.type == 3:
+                    hits = pg.sprite.spritecollide(self.player, self.platforms, True)
+            # if self.player.pos.y == hits[0].rect.bottom:
+            # if hits:
+            #     for h in self.platforms:
+            #         if self.player.rect.top >= h.rect.bottom:
+            #             h.kill()
+            #             print('hit')
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
+                # self.player.jumping = False
                 self.player.pos.y = hits[0].rect.top
                 self.player.vel.y = 0
             hit_floor = pg.sprite.spritecollide(self.player,self.floors,False)
             if hit_floor:
+                # self.player.jumping = False
                 self.player.pos.y = hit_floor[0].rect.top
                 self.player.vel.y = 0
             hit_plat_L = pg.sprite.spritecollide(self.player,self.walls,False)
@@ -88,9 +100,10 @@ class Game:
                 if self.playing:
                     self.playing = False
                 self.running = False
-            if event.type == pg.KEYDOWN:
+            if event.type == pg.KEYUP:
                 if event.key == pg.K_SPACE:
-                    self.player.jump()
+                    self.player.jump_cut()
+                    # self.player.jump()
 
     def draw(self):
         # Game Loop - draw
