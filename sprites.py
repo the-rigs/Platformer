@@ -57,7 +57,7 @@ class Player(pg.sprite.Sprite):
         self.image = self.blink_list_r[0]
         self.rect = self.image.get_rect()
         self.rect.center = (35, HEIGHT - 40)
-        self.pos = vec(35, HEIGHT - 40)
+        self.pos = vec(35, HEIGHT-80)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
         self.inventory = []
