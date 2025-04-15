@@ -45,31 +45,101 @@ class Game:
         # Game Loop - Update
         self.all_sprites.update()
         if self.player.vel.y < 0:
+
+            # for p in self.platforms:
+            #     print('test')
+            #     if p.type == 3:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             for p in hits:
-                if p.type == 3:
-                    p.quest = False
-                    self.player.vel.y*=-1
-
-        if self.player.vel.y > 0:
-            hits = pg.sprite.spritecollide(self.player, self.platforms, False)
-            if hits:
                 lowest = hits[0]
                 for hit in hits:
-                    if hit.rect.bottom > lowest.rect.bottom:
+                    if hit.rect.bottom > lowest.rect.top:
                         lowest = hit
-                if self.player.pos.x < lowest.rect.right + 10 and self.player.pos.x > lowest.rect.left - 10:
-                    if self.player.pos.y < lowest.rect.centery:
-                        self.player.pos.y = lowest.rect.top
-                        self.player.vel.y = 0
-                        self.player.jumping = False
-                        self.player.falling = False
+                        if self.player.pos.x < lowest.rect.right + 10 and self.player.pos.x > lowest.rect.left - 10:
+                            print("this is it")
+                            self.player.jumping = False
 
-            # hit_floor = pg.sprite.spritecollide(self.player,self.floors,False)
-            # if hit_floor:
-            #     # self.player.jumping = False
-            #     self.player.pos.y = hit_floor[0].rect.top
-            #     self.player.vel.y = 0
+                            self.player.vel.y = abs(self.player.vel.y)
+        ###############################################################
+                        if self.player.rect.bottom  < lowest.rect.top:
+                            print("working on")
+                            self.player.rect.bottom = lowest.rect.top
+                            self.player.vel.y = 0
+                            self.player.jumping = False
+                            self.player.falling = False
+                            if p.type == 2 and p.type == 3:
+                                #self.player.vel.y *= -1
+                                self.player.jumping = False
+                        if p.type == 3:
+                            print('type3')
+                            p.quest = False
+                            #self.player.vel.y = 0
+                            #self.player.vel.y = abs(self.player.vel.y)
+                            self.player.vel.y *= -1
+                            self.player.jumping = False
+                        if p.type == 2:
+                            print('type2')
+                            p.move = True
+                            #self.player.vel.y = abs(self.player.vel.y)
+                            #self.player.vel.y *= -1
+                            self.player.jumping = False
+                            while p.count <101:
+                                print(p.count)
+                                if p.count <=51:
+                                    # p.lift = -10
+                                    p.rect.y -=1
+                                    print(p.rect.y)
+                                else:
+                                    print('working')
+                                    print(p.rect.y)
+                                    p.rect.y +=1
+                                    # p.lift = 10
+                                p.count += 1
+                            if p.count ==10:
+                                p.count = 0
+                                p.lift = 0
+                            # if  p.move:
+                            #     p.lift = -1
+                            #     p.track = 1
+                            #     p.move = False
+                            #             # print('Hit')
+        ####################################################################
+
+
+                    # if self.player.pos.y == hits[0].rect.bottom:
+            # if hits:
+            #     for h in self.platforms:
+            #         if self.player.rect.top >= h.rect.bottom:
+            #             h.kill()
+            #             print('hit')
+        if self.player.vel.y > 0:
+            hits = pg.sprite.spritecollide(self.player, self.platforms, False)
+            for h in hits:
+                if h.type == 0:
+
+                    self.player.jumping = False
+                    self.player.falling = False
+                    self.player.pos.y = hits[0].rect.top
+                    self.player.vel.y = 0
+
+                else:
+                    lowest = hits[0]
+                    for hit in hits:
+                        if hit.rect.bottom > lowest.rect.top:
+                            lowest = hit
+                    if self.player.pos.x < lowest.rect.right + 10 and self.player.pos.x > lowest.rect.left - 10:
+
+                        if self.player.rect.bottom-5 < lowest.rect.top - 20:
+
+                            self.player.rect.bottom = lowest.rect.top
+                            self.player.vel.y = 0
+                            self.player.jumping = False
+                            self.player.falling = False
+            hit_floor = pg.sprite.spritecollide(self.player,self.floors,False)
+            if hit_floor:
+                # self.player.jumping = False
+                self.player.pos.y = hit_floor[0].rect.top
+                self.player.vel.y = 0
             hit_plat_L = pg.sprite.spritecollide(self.player,self.walls,False)
             if hit_plat_L:
                 #if self.player.rect.left <= hit_plat_L[0].rect.left:
@@ -87,16 +157,16 @@ class Game:
                 plat.rect.x -= abs(self.player.vel.x)
             for wall in self.walls:
                     wall.rect.x -= abs(self.player.vel.x)
-        if self.player.vel.x <-.05:
-            self.player.count -=1
-            if self.player.count <0:
-                self.player.count=0
-        # if self.player.rect.left <= WIDTH/8:
-        #     self.player.pos.x += abs(self.player.vel.x)
-        #     for plat in self.platforms:
-        #         plat.rect.x += abs(self.player.vel.x)
-        #     for wall in self.walls:
-        #         wall.rect.x += abs(self.player.vel.x)
+        # if self.player.vel.x <-.05:
+        #     self.player.count -=1
+        #     if self.player.count <0:
+        #         self.player.count=0
+        if self.player.rect.left <= WIDTH/8:
+            self.player.pos.x += abs(self.player.vel.x)
+            for plat in self.platforms:
+                plat.rect.x += abs(self.player.vel.x)
+            for wall in self.walls:
+                wall.rect.x += abs(self.player.vel.x)
     def events(self):
         # Game Loop - events
         for event in pg.event.get():
@@ -105,9 +175,9 @@ class Game:
                 if self.playing:
                     self.playing = False
                 self.running = False
-            if event.type == pg.KEYUP:
-                if event.key == pg.K_SPACE:
-                    self.player.jump_cut()
+            # if event.type == pg.KEYUP:
+            #     if event.key == pg.K_SPACE:
+            #         self.player.jump_cut()
                     # self.player.jump()
 
     def draw(self):
