@@ -20,6 +20,7 @@ class Game:
         self.platforms = pg.sprite.Group()
         self.floors = pg.sprite.Group()
         self.walls = pg.sprite.Group()
+        self.mushrooms = pg.sprite.Group()
         self.player = Player(self)
         self.all_sprites.add(self.player)
         for wall in WALL_LIST:
@@ -42,13 +43,8 @@ class Game:
             self.draw()
 
     def update(self):
-        # Game Loop - Update
         self.all_sprites.update()
         if self.player.vel.y < 0:
-
-            # for p in self.platforms:
-            #     print('test')
-            #     if p.type == 3:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             for p in hits:
                 lowest = hits[0]
@@ -56,13 +52,12 @@ class Game:
                     if hit.rect.bottom > lowest.rect.top:
                         lowest = hit
                         if self.player.pos.x < lowest.rect.right + 10 and self.player.pos.x > lowest.rect.left - 10:
-                            print("this is it")
+                            # print("this is it")
                             self.player.jumping = False
 
                             self.player.vel.y = abs(self.player.vel.y)
-        ###############################################################
                         if self.player.rect.bottom  < lowest.rect.top:
-                            print("working on")
+                            # print("working on")
                             self.player.rect.bottom = lowest.rect.top
                             self.player.vel.y = 0
                             self.player.jumping = False
@@ -71,81 +66,70 @@ class Game:
                                 #self.player.vel.y *= -1
                                 self.player.jumping = False
                         if p.type == 3:
-                            print('type3')
                             p.quest = False
-                            #self.player.vel.y = 0
-                            #self.player.vel.y = abs(self.player.vel.y)
-                            self.player.vel.y *= -1
+                            self.player.vel.y = abs(self.player.vel.y)
                             self.player.jumping = False
+                            if p.x==22 and self.player.make_mush:
+                                self.m = Mushroom(self,p.rect.x,p.rect.top)
+                                self.all_sprites.add(self.m)
+                                self.mushrooms.add(self.m)
+                                self.player.mushroom = True
+                                self.player.make_mush = False
                         if p.type == 2:
-                            print('type2')
                             p.move = True
-                            #self.player.vel.y = abs(self.player.vel.y)
-                            #self.player.vel.y *= -1
+                            self.player.vel.y = abs(self.player.vel.y)
                             self.player.jumping = False
                             while p.count <101:
-                                print(p.count)
                                 if p.count <=51:
-                                    # p.lift = -10
                                     p.rect.y -=1
-                                    print(p.rect.y)
                                 else:
-                                    print('working')
-                                    print(p.rect.y)
                                     p.rect.y +=1
-                                    # p.lift = 10
                                 p.count += 1
                             if p.count ==10:
                                 p.count = 0
                                 p.lift = 0
-                            # if  p.move:
-                            #     p.lift = -1
-                            #     p.track = 1
-                            #     p.move = False
-                            #             # print('Hit')
-        ####################################################################
-
-
-                    # if self.player.pos.y == hits[0].rect.bottom:
-            # if hits:
-            #     for h in self.platforms:
-            #         if self.player.rect.top >= h.rect.bottom:
-            #             h.kill()
-            #             print('hit')
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             for h in hits:
                 if h.type == 0:
-
                     self.player.jumping = False
                     self.player.falling = False
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = 0
-
                 else:
                     lowest = hits[0]
                     for hit in hits:
                         if hit.rect.bottom > lowest.rect.top:
                             lowest = hit
                     if self.player.pos.x < lowest.rect.right + 10 and self.player.pos.x > lowest.rect.left - 10:
-
+                        print('Hit platforms big')
                         if self.player.rect.bottom-5 < lowest.rect.top - 20:
-
                             self.player.rect.bottom = lowest.rect.top
                             self.player.vel.y = 0
                             self.player.jumping = False
                             self.player.falling = False
+            if self.player.mushroom:
+                if self.m.vel.y > 0:
+                    hits = pg.sprite.spritecollide(self.m, self.platforms, False)
+                    if hits:
+                        self.m.pos.y = hits[0].rect.top
+                        self.m.vel.y = 0
+                hits = pg.sprite.spritecollide(self.m, self.platforms, False)
+                if hits:
+                    for h in hits:
+                        if h.type == 4:
+                            self.m.move_left = True
+                hits_mush = pg.sprite.spritecollide(self.player, self.mushrooms, True)
+                if hits_mush:
+                    self.player.big = True
             hit_floor = pg.sprite.spritecollide(self.player,self.floors,False)
             if hit_floor:
-                # self.player.jumping = False
                 self.player.pos.y = hit_floor[0].rect.top
                 self.player.vel.y = 0
             hit_plat_L = pg.sprite.spritecollide(self.player,self.walls,False)
             if hit_plat_L:
-                #if self.player.rect.left <= hit_plat_L[0].rect.left:
                 self.player.stop=True
                 self.player.pos.x += 6
-                # print(self.player.pos.x)
         if self.player.stop:
             self.player.acc = 0
         if self.player.rect.right>= WIDTH/2:
@@ -157,10 +141,8 @@ class Game:
                 plat.rect.x -= abs(self.player.vel.x)
             for wall in self.walls:
                     wall.rect.x -= abs(self.player.vel.x)
-        # if self.player.vel.x <-.05:
-        #     self.player.count -=1
-        #     if self.player.count <0:
-        #         self.player.count=0
+            if self.player.mushroom:
+                self.m.vel.x -= abs(self.player.vel.x)
         if self.player.rect.left <= WIDTH/8:
             self.player.pos.x += abs(self.player.vel.x)
             for plat in self.platforms:
@@ -175,26 +157,17 @@ class Game:
                 if self.playing:
                     self.playing = False
                 self.running = False
-            # if event.type == pg.KEYUP:
-            #     if event.key == pg.K_SPACE:
-            #         self.player.jump_cut()
-                    # self.player.jump()
-
     def draw(self):
         # Game Loop - draw
         self.screen.fill(LIGHTBLUE)
         self.all_sprites.draw(self.screen)
         for i in range(1,14):
             self.draw_text(str(i-1), 22, WHITE, SCREEN_1/2*(2*i-3)*BLOCK_SIZE, HEIGHT/2)
-        # *after* drawing everything, flip the display
         pg.display.flip()
-
     def show_start_screen(self):
-        # game splash/start screen
         pass
 
     def show_go_screen(self):
-        # game over/continue
         pass
 
     def draw_text(self, text, size, color, x, y):

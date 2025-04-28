@@ -19,6 +19,7 @@ COLOR2 = BLUE
 
 # Player properties
 PLAYER_ACC = 0.8
+MUSH_ACC = .3
 PLAYER_FRICTION = -0.12
 PLAYER_GRAV = .5
 PLAYER_JUMP = 10
@@ -26,7 +27,7 @@ PLAYER_JUMP = 10
 
 BLOCK_SIZE = 36*SCALE
 PLAYER_SIZE = 30*SCALE
-
+PLAYER_SIZE2 = 28*SCALE
 SCREEN_1 = 16
 WALL_LIST=[(-14,4,99)]
 PLATFORM_LIST = [(17,5,3),
@@ -89,6 +90,7 @@ PLATFORM_LIST = [(17,5,3),
                  (188,2,8),(188,3,8),(188,4,8),(188,5,8),(188,6,8),(188,7,8),(188,8,8),
                  (197,2,8)
                  ]
+
 for i in range(-20,213):
     var = (i,0,0)
     var2 = (i,1,0)

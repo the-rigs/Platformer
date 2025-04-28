@@ -65,6 +65,10 @@ class Player(pg.sprite.Sprite):
         self.track = 0
         self.far = 0
         self.stop = False
+        self.mushroom = False
+        self.make_mush = True
+        self.big = False
+        self.jump_big = 1
 
     def jump_cut(self):
         if self.jumping:
@@ -127,29 +131,55 @@ class Player(pg.sprite.Sprite):
     def load_images(self):
         ssi = pg.image.load('small_mario.png').convert_alpha()
         self.sprite_sheet = spritesheet.SpriteSheet(ssi)
-        for x in range(14):
-            for y in range(2):
+        ssi2 = pg.image.load('big_mario.png').convert_alpha()
+        self.sprite_sheet2 = spritesheet.SpriteSheet(ssi2)
+        # for x in range(14):
+        #     for y in range(2):
+        #         if y == 0 and x==0:
+        #             img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
+        #             img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
+        #             self.idle_r.append(img)
+        #             img = pg.transform.flip(img, True, False)
+        #             img.set_colorkey(BLACK)
+        #             self.idle_l.append(img)
+        #         if y == 0 and (x == 2 or x==4 or x == 6 ):
+        #             img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
+        #             img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
+        #             self.running_r.append(img)
+        #             img = pg.transform.flip(img, True, False)
+        #             img.set_colorkey(BLACK)
+        #             self.running_l.append(img)
+        #         if y == 0 and (x==10):
+        #             img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
+        #             img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
+        #             self.jump_r.append(img)
+        #             img = pg.transform.flip(img, True, False)
+        #             img.set_colorkey(BLACK)
+        #             self.jump_l.append(img)
+        for x in range(6):
+            for y in range(4):
                 if y == 0 and x==0:
-                    img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
-                    img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
+                    img = self.sprite_sheet2.get_image(x, y, 28, 34, BLACK)
+                    img = pg.transform.scale(img, (52*SCALE, 68*SCALE))
                     self.idle_r.append(img)
                     img = pg.transform.flip(img, True, False)
                     img.set_colorkey(BLACK)
                     self.idle_l.append(img)
-                if y == 0 and (x == 2 or x==4 or x == 6 ):
-                    img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
-                    img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
+                if y == 0 and (x == 1 or x==2 or x == 3 ):
+                    img = self.sprite_sheet2.get_image(x, y, 28, 34, BLACK)
+                    img = pg.transform.scale(img, (52*SCALE, 68*SCALE))
                     self.running_r.append(img)
                     img = pg.transform.flip(img, True, False)
                     img.set_colorkey(BLACK)
                     self.running_l.append(img)
-                if y == 0 and (x==10):
-                    img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
-                    img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
+                if y == 0 and (x==4):
+                    img = self.sprite_sheet2.get_image(x, y, 28, 34, BLACK)
+                    img = pg.transform.scale(img, (52*SCALE, 68*SCALE))
                     self.jump_r.append(img)
                     img = pg.transform.flip(img, True, False)
                     img.set_colorkey(BLACK)
                     self.jump_l.append(img)
+
 
     def update(self):
         self.animate()
@@ -227,15 +257,65 @@ class Platform(pg.sprite.Sprite):
             self.animate()
         if self.move:
             if self.down:
-                self.rect.y += 1
+                self.rect.y += 10
                 if self.rect.y > (HEIGHT - (36 * (self.y + 1)) * SCALE):
                     self.down = False
                     self.move = False
+                    self.rect.y = HEIGHT - (36 * (self.y + 1)) * SCALE
             else:
-                self.rect.y -= 1
+                self.rect.y -= 10
                 if self.rect.y < (HEIGHT - (36 * (self.y + 1)) * SCALE) - 20:
                     self.down = True
 
+class Mushroom(pg.sprite.Sprite):
+  def __init__(self,game, x,y):
+    # self.groups = game.all_sprites, game.powerups
+    pg.sprite.Sprite.__init__(self)
+    self.game = game
+    self.x = x
+    self.y = y
+    self.current_frame = 0
+    self.last_update = 0
+    self.image = pg.Surface((50, 50))
+    self.image.fill(RED)
+    #self.image = pow_block[0]
+    #self.image = pg.transform.scale(self.image,(20,20))
+    self.rect = self.image.get_rect()
+    self.rect.bottom = y - 50
+    self.pos = vec(x, y - 50)
+    self.vel = vec(0, 0)
+    self.acc = vec(0, 0)
+    self.rect.x = x
+    self.speedx = 3
+    self.move_left = False
+
+    # self.acc.x = PLAYER_ACC
+    # self.rect.x = BLOCK_SIZE * self.x - 20
+    # self.rect.y = HEIGHT - (36 * (self.y + 1)) * SCALE
+  def animate(self):
+      now = pg.time.get_ticks()
+      if now - self.last_update > 135:
+        self.last_update = now
+        self.current_frame = (self.current_frame+1)%len(pow_block)
+        self.image = pow_block[self.current_frame]
+        self.image = pg.transform.scale(self.image,(20,20))
+        # bottom = self.rect.bottom+2
+        # self.rect = self.image.get_rect()
+        # self.rect.bottom = bottom
+  def update(self):
+    # self.animate()
+    #self.rect.x +=4
+    self.acc = vec(0, PLAYER_GRAV)
+
+    self.acc.x = MUSH_ACC
+    if self.move_left:
+        self.acc.x = -MUSH_ACC
+
+    self.acc.x += self.vel.x * PLAYER_FRICTION
+    # equations of motion
+    self.vel += self.acc
+    self.pos += self.vel+.5*self.acc
+    self.rect.midbottom = self.pos
 
 class Wall(pg.sprite.Sprite):
     def __init__(self, x, y, type):
