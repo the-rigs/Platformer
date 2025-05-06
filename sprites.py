@@ -133,52 +133,52 @@ class Player(pg.sprite.Sprite):
         self.sprite_sheet = spritesheet.SpriteSheet(ssi)
         ssi2 = pg.image.load('big_mario.png').convert_alpha()
         self.sprite_sheet2 = spritesheet.SpriteSheet(ssi2)
-        # for x in range(14):
-        #     for y in range(2):
-        #         if y == 0 and x==0:
-        #             img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
-        #             img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
-        #             self.idle_r.append(img)
-        #             img = pg.transform.flip(img, True, False)
-        #             img.set_colorkey(BLACK)
-        #             self.idle_l.append(img)
-        #         if y == 0 and (x == 2 or x==4 or x == 6 ):
-        #             img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
-        #             img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
-        #             self.running_r.append(img)
-        #             img = pg.transform.flip(img, True, False)
-        #             img.set_colorkey(BLACK)
-        #             self.running_l.append(img)
-        #         if y == 0 and (x==10):
-        #             img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
-        #             img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
-        #             self.jump_r.append(img)
-        #             img = pg.transform.flip(img, True, False)
-        #             img.set_colorkey(BLACK)
-        #             self.jump_l.append(img)
-        for x in range(6):
-            for y in range(4):
+        for x in range(14):
+            for y in range(2):
                 if y == 0 and x==0:
-                    img = self.sprite_sheet2.get_image(x, y, 28, 34, BLACK)
-                    img = pg.transform.scale(img, (52*SCALE, 68*SCALE))
+                    img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
+                    img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
                     self.idle_r.append(img)
                     img = pg.transform.flip(img, True, False)
                     img.set_colorkey(BLACK)
                     self.idle_l.append(img)
-                if y == 0 and (x == 1 or x==2 or x == 3 ):
-                    img = self.sprite_sheet2.get_image(x, y, 28, 34, BLACK)
-                    img = pg.transform.scale(img, (52*SCALE, 68*SCALE))
+                if y == 0 and (x == 2 or x==4 or x == 6 ):
+                    img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
+                    img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
                     self.running_r.append(img)
                     img = pg.transform.flip(img, True, False)
                     img.set_colorkey(BLACK)
                     self.running_l.append(img)
-                if y == 0 and (x==4):
-                    img = self.sprite_sheet2.get_image(x, y, 28, 34, BLACK)
-                    img = pg.transform.scale(img, (52*SCALE, 68*SCALE))
+                if y == 0 and (x==10):
+                    img = self.sprite_sheet.get_image(x, y, 15, 15, BLACK)
+                    img = pg.transform.scale(img, (PLAYER_SIZE, PLAYER_SIZE))
                     self.jump_r.append(img)
                     img = pg.transform.flip(img, True, False)
                     img.set_colorkey(BLACK)
                     self.jump_l.append(img)
+        # for x in range(6):
+        #     for y in range(4):
+        #         if y == 0 and x==0:
+        #             img = self.sprite_sheet2.get_image(x, y, 28, 34, BLACK)
+        #             img = pg.transform.scale(img, (52*SCALE, 68*SCALE))
+        #             self.idle_r.append(img)
+        #             img = pg.transform.flip(img, True, False)
+        #             img.set_colorkey(BLACK)
+        #             self.idle_l.append(img)
+        #         if y == 0 and (x == 1 or x==2 or x == 3 ):
+        #             img = self.sprite_sheet2.get_image(x, y, 28, 34, BLACK)
+        #             img = pg.transform.scale(img, (52*SCALE, 68*SCALE))
+        #             self.running_r.append(img)
+        #             img = pg.transform.flip(img, True, False)
+        #             img.set_colorkey(BLACK)
+        #             self.running_l.append(img)
+        #         if y == 0 and (x==5):
+        #             img = self.sprite_sheet2.get_image(x, y, 28, 34, BLACK)
+        #             img = pg.transform.scale(img, (58*SCALE, 68*SCALE))
+        #             self.jump_r.append(img)
+        #             img = pg.transform.flip(img, True, False)
+        #             img.set_colorkey(BLACK)
+        #             self.jump_l.append(img)
 
 
     def update(self):
@@ -199,10 +199,6 @@ class Player(pg.sprite.Sprite):
         self.vel += self.acc
         self.pos += self.vel
         # wrap around the sides of the screen
-        if self.pos.x > WIDTH:
-            self.pos.x = 0
-        if self.pos.x < 0:
-            self.pos.x = WIDTH
         self.rect.midbottom = self.pos
 
 class Platform(pg.sprite.Sprite):
@@ -215,6 +211,8 @@ class Platform(pg.sprite.Sprite):
         self.last_update = 0
         #floor
         if self.type == 0:
+            self.image = plats[0]
+        if self.type == 1:
             self.image = plats[0]
         #brick
         elif self.type ==2:

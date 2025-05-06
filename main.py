@@ -54,7 +54,6 @@ class Game:
                         if self.player.pos.x < lowest.rect.right + 10 and self.player.pos.x > lowest.rect.left - 10:
                             # print("this is it")
                             self.player.jumping = False
-
                             self.player.vel.y = abs(self.player.vel.y)
                         if self.player.rect.bottom  < lowest.rect.top:
                             # print("working on")
@@ -79,8 +78,8 @@ class Game:
                             p.move = True
                             self.player.vel.y = abs(self.player.vel.y)
                             self.player.jumping = False
-                            while p.count <101:
-                                if p.count <=51:
+                            while p.count <23:
+                                if p.count <=11:
                                     p.rect.y -=1
                                 else:
                                     p.rect.y +=1
@@ -91,7 +90,7 @@ class Game:
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             for h in hits:
-                if h.type == 0:
+                if h.type == 1:
                     self.player.jumping = False
                     self.player.falling = False
                     self.player.pos.y = hits[0].rect.top
@@ -122,17 +121,9 @@ class Game:
                 hits_mush = pg.sprite.spritecollide(self.player, self.mushrooms, True)
                 if hits_mush:
                     self.player.big = True
-            hit_floor = pg.sprite.spritecollide(self.player,self.floors,False)
-            if hit_floor:
-                self.player.pos.y = hit_floor[0].rect.top
-                self.player.vel.y = 0
-            hit_plat_L = pg.sprite.spritecollide(self.player,self.walls,False)
-            if hit_plat_L:
-                self.player.stop=True
-                self.player.pos.x += 6
         if self.player.stop:
             self.player.acc = 0
-        if self.player.rect.right>= WIDTH/2:
+        if self.player.rect.right>=WIDTH/2:
             if self.player.vel.x>.05:
                 self.player.count +=1
 
@@ -143,12 +134,6 @@ class Game:
                     wall.rect.x -= abs(self.player.vel.x)
             if self.player.mushroom:
                 self.m.vel.x -= abs(self.player.vel.x)
-        if self.player.rect.left <= WIDTH/8:
-            self.player.pos.x += abs(self.player.vel.x)
-            for plat in self.platforms:
-                plat.rect.x += abs(self.player.vel.x)
-            for wall in self.walls:
-                wall.rect.x += abs(self.player.vel.x)
     def events(self):
         # Game Loop - events
         for event in pg.event.get():
@@ -166,10 +151,8 @@ class Game:
         pg.display.flip()
     def show_start_screen(self):
         pass
-
     def show_go_screen(self):
         pass
-
     def draw_text(self, text, size, color, x, y):
         font = pg.font.Font(self.font_name, size)
         text_surface = font.render(text, True, color)

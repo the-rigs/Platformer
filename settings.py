@@ -93,7 +93,7 @@ PLATFORM_LIST = [(17,5,3),
 
 for i in range(-20,213):
     var = (i,0,0)
-    var2 = (i,1,0)
+    var2 = (i,1,1)
     PLATFORM_LIST.append(var)
     PLATFORM_LIST.append(var2)
     #tube loop
